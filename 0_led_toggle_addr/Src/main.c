@@ -5,7 +5,6 @@
 
 
 
-
 //Why we need Buses - Every periphers needs access to the clock
 //    				  buses carry the clock.
 
