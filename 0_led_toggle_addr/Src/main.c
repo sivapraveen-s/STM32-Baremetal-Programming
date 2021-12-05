@@ -1,0 +1,99 @@
+//Led Turn and ON and OFF
+
+// nucleo board connection for LED
+// LED - PA5 i.e., PORT A Pin #5
+
+
+//Why we need Buses - Every periphers needs access to the clock
+//    				  buses carry the clock.
+
+//AHB - Advanced High Performance bus
+//APB - Advance Peripheral Bus
+
+//RCC - reset and clock control register,
+//      RCC register is in the charge of enabling the each buses
+//      to transport Clock
+//      RCC has a enable bit of multiple buses, here for using led
+//		which is connected to PORTA - 5 so we are using only GPIOA
+//		for using GPIOA we need a AHB support
+
+//UL - unsigned long
+
+/*
+ * Registers used
+ *
+ * (ref: stm32f44re usermanual)
+ * RCC_AHB1ENR - GPIOx Bus Enable
+ * GPIOx_MODER - GPIO Port Mode register
+ * 				 here x = A to H, total number of ports
+ * 				 GPIOx_MODER has 32 bits MODER0 to MODER15
+ * 				 MODER0 - Pin #0
+ * 				 MODER1 - Pin #1
+ * 				 MODER15 - Pin #15
+ * 				 here, LED is pin#5 so, MODER5 is used corresponding bit is
+ * 				 10 & 11
+ * 				 0 0 - input pin
+ * 				 0 1 - GP output mode
+ * 				 1 0 - Alternate function mode like UART tx,rx, spi, i2c
+ * 				 1 1 - Analog mode
+ *
+ * 				 for here OUTPUT mode, and in the user manual they have
+ * 				 mentioned address offset is 0x0
+ * 				 reset values: that means, controller is already in that state
+ * 				 PORTA - 0xA800 0000
+ * 				 PORTB - 0x0000 0280
+ * 				 PORTC to PORTH - 0x0000 0000
+ *
+ * 				 here we are going to use PORTA, so that 10 and 11
+ * 				 we need to set as 10 - 1, 11-0
+ * 				 here 11th bit is already set to 0
+ * 				 we need to set the 10th bit to 1
+ *
+ * 				 (1U << 10) - set bit 10 to 1
+ * 				 &= ~(1U << 11) - set bit 11 to 0 -or- clearing the bit
+ *
+ *
+ *
+ */
+
+// For conversion of the register, to use the register properly
+// needs to typecast to volatile int pointer and deference the pointer
+// (*(volatile unsigned int*)0x0)
+
+
+
+#define PERIPH_BASE 		(0x40000000UL)
+#define AHB1PERIPH_OFFSET 	(0x00020000UL)
+#define AHB1PERIPH_BASE 	(PERIPH_BASE + AHB1PERIPH_OFFSET)	// 0x40020000UL
+#define GPIOA_OFFSET 		(0x0000UL)
+
+#define GPIO_BASE 			(AHB1PERIPH_BASE + GPIOA_OFFSET)	// 0x40020000UL
+
+#define RCC_OFFSET			(0x3800UL)
+#define RCC_BASE 			(AHB1PERIPH_BASE + RCC_OFFSET)
+
+#define AHB1EN_R_OFFSET 	(0x30UL)
+#define RCC_AHB1EN_R		(*(volatile unsigned int*)(RCC_BASE + AHB1EN_R_OFFSET))
+
+#define MODE_R_OFFSET 		(0x00UL)	//
+#define GPIOA_MODE_R 		(*(volatile unsigned int*)(GPIOA_BASE + MODE_R_OFFSET))
+
+#define OD_R_OFFSET 		(0x14UL)	// GPIOx_ODR
+#define GPIOA_OD_R 			(*(volatile unsigned int*)(GPIOA_BASE + OD_R_OFFSET))
+
+#define GPIOA_EN 			(1U << 0)	//	Enabling 0th bit at RCC_AHB1ENR Register
+#define GPIOB_EN 			(1U << 1)	// Enabling 1th bit i.e GPIOB / PORTB AHB1 buses
+
+#define PIN5 				(1U << 5)
+#define LED_PIN				PIN5
+
+/*
+ * Setting GPIO mode in the register GPIOA_MODER -or- GPIOx_MODER
+ * 1U << 10 		- setting bit #10
+ * &= ~(1U << 11)	- clering bit #11
+ *
+ */
+
+
+
+
