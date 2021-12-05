@@ -67,7 +67,7 @@
 #define AHB1PERIPH_BASE 	(PERIPH_BASE + AHB1PERIPH_OFFSET)	// 0x40020000UL
 #define GPIOA_OFFSET 		(0x0000UL)
 
-#define GPIO_BASE 			(AHB1PERIPH_BASE + GPIOA_OFFSET)	// 0x40020000UL
+#define GPIOA_BASE 			(AHB1PERIPH_BASE + GPIOA_OFFSET)	// 0x40020000UL
 
 #define RCC_OFFSET			(0x3800UL)
 #define RCC_BASE 			(AHB1PERIPH_BASE + RCC_OFFSET)
@@ -95,5 +95,43 @@
  */
 
 
+/*
+ * 1. Enable Clock access to GPIOA
+ * 2. Set PA5 to output mode
+ * 3. Set High/Toggle The PA5 pin to blink the LED which is connected on the board
+ *
+ */
+int main()
+{
+	// Enabling clock access to GPIOA
+	RCC_AHB1EN_R |= GPIOA_EN;
+
+	// Setting PA5 as output
+	GPIOA_MODE_R |= (1U << 10); 	// set bit 10 to 1
+	GPIOA_MODE_R &= ~(1U << 11);	// Set bit 11 to 0
+
+	GPIOA_OD_R = LED_PIN;
+
+	for(int indx = 0; indx < 10000000; indx ++);
+
+	GPIOA_OD_R &= ~LED_PIN;
+
+	for(int indx = 0; indx < 10000000; indx ++);
+
+	GPIOA_OD_R = LED_PIN;
+
+	for(int indx = 0; indx < 10000000; indx ++);
+
+	GPIOA_OD_R ^= LED_PIN;
+
+	while(1)
+	{
+		GPIOA_OD_R ^= LED_PIN;
+
+		for(int indx = 0; indx < 100000; indx ++);
+	}
+
+
+}
 
 
