@@ -17,7 +17,16 @@ MCUs GPIO Modules have atleast 2 registers
 - Direction Register: Used to Set pin as Input -or- Output
 - Data Register     : Used to Write to pin -or- Read from pin
 
- 
+# MCU Buses
 
+- Advanced High-Performance Bus (AHB)
+  - 1 Clock Cycle access to peripeheral
+- Advanced Peripheral Bus (APB)
+  - Minimum of 2 clock cycles access to peripherals 
 
+# MCU Clock Sources
+
+1. On-Chip RC Oscillator - Least Precise
+2. Externally Connected Crystal - Most Precise
+3. Phase Locked Loop (PLL) - Programmable
 
