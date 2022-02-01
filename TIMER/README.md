@@ -75,3 +75,52 @@
                = 0.5 second
   ```
   
+## TIM-Registers
+
+- Prescaler (PSC) 
+  ```
+  TIM2->PSC = 1600 - 1;       // Setting Prescaler value to 1600
+  ```
+
+- Auto-Reload Register(ARR)
+  ```
+  TIM2->ARR = 10000;          // Setting Auto reload value
+  ```
+ 
+- Control Register 1 (CR1)
+  ```
+  TIM2->CR1 = 1;              // Enable Timer2
+  ```
+
+- Status Register (SR)
+  ```
+  TIM2->SR & 1;         // Check update interrupt flag
+  TIM2->SR &= ~1;       // Clear update interrupt flag
+  ```
+
+- Capture/Compare Register (CCR1, CCR2, CCR3, CCR4)
+  - One capture/compare register for each of the 4 channels
+  - CH1 - CCR1, CH2 - CCR2, CH3 - CCR3, CH4 - CCR4
+  ```
+  timestamp = TIM2->CCR1;           //read captured value
+  ```
+  
+- Capture Compare Mode Register 1 (CCMR1)
+  - Configuring capture/compare functionality for CH1 and CH2
+
+- Capture Compare Mode Register 2 (CCMR2)
+  - Configuring capture/compare functionality for CH3 and CH4
+  
+  ```
+  TIM2->CCMR1 = 0x41;         // set CH1 to capture at every edge
+  ```
+  
+- Capture Compare Enable Register (CCER)
+  - Used to enable any of the timer channels either as input capture or output compare
+  
+  ```
+  TIM2->CCER = 1;       // Enable Channel 1
+  ```
+  
+  
+  
