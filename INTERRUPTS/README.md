@@ -53,3 +53,28 @@
   - NMI   - priority of -2
   - HardFault - priority of -1
 - Lower number is equal to Higher Priority
+
+### Priorities in M3/M4/M7
+- Priority of each interrupt is defined using one of the **Interrupt priority Register (IPR)**
+- Each Interrupt Request(IRQ) uses 8-bits inside a single IPR register
+- Therefore **one IPR** register allows us to configure the priorities of four different Interrupt requests
+- Example IPR0 holds the priorities of IRQ0, IRQ1, IRQ2 and IRQ3
+- There are 60 interrupt priority registers: IPR0 - IPR59
+- There are 60 x 4 = 240 Interrupt Requests(IRQ)
+- 8 Bits to configure the priority of an IRQ implies there are 2 power 8 = 255 priority levels
+- STM32 MCU's use only the 4 upper bits to configure the priority pfeach IRQ this implies that in STM32 MCUs there are 2 power 4 = 16 priority levels
+- IPRn = IRQ(4n+3), IRQ(4n+2), IRQ(4n+1) and IRQ(4n) 
+- The 16 priority levels: 0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80, 0x90, 0xA0, 0xB0, 0xC0, 0xD0, 0xE0, 0xF0
+- Highest priority = 0x00 = 0 & lowest priority = 0xF0 = 16
+- To find the IPR number, we divide the IRQ number by 4, the remainder will determine which byte it is in the IPR register.
+- Because only the highest 4 bits are used for priority, the priority number needs to be multiplied by 16 or left shift 4 bits
+- To simply to calculation, the NVIC_IPRx are defined as an array of 8-bit registers IP[x] in the core_cm3.h, core_cm4.h, core_cm7.h files. Such that the priority of IRQx is controlled by IP[x]
+- Eg. Setting TIM2 interrupt to 3, TIM2 interrupt is IRQ 28 (provided in stm32f411xe/stm32f4xxxx.h). NVIC->IP[28] = 3<<4; or NVIC_SetPriority(TIM2_IRQn, 3);
+
+#### Sub-priorities
+- The interrupt priority registers (IPR) can also be divided into sub-priorities
+- In this configuration there are a series of bits defining preemption priority and a series of bits defined the sub-priority
+- The sub-priority will determine which IRQ will be executed first in the case of multiple pending IRQs
+
+
+
