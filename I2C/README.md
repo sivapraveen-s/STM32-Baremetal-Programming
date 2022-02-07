@@ -43,10 +43,33 @@
 - Each byte must be followed by an Acknowledge (ACK) bit
 - Data is transferred with the Most Significant Bit (MSB) first
 
-### Address Frame
+#### Address Frame
 - Address frame is first in any new communication sequence
 - For a 7-bit address, the address is sent out siginificant bit (MSB) first, followed by a R/W bit indicating whether this is a read(1) or write(0) operation
 
+#### Data Frame
+- The data frame begins transmission after the address frame is sent
+- The master will simply continue generating clock pulses on SCL at a regular interval, and the data will be placed on SDA by either the both, depending on whether the R/W bit indicated a read -or- write operation
+
+### I2C Clock Speed
+- Speed of the I2C interface and should correspond with the bus speeds defined in the I2C Specification
+- Specification defines the following modes
+  - Standard mode: 100 KHz max
+  - Fast-mode: 400 KHz max
+  - Fast-mode plus: 1 MHz max
+  - High-speed mode: 3.4 MHz
+
+### Duty Cycle
+- Specifies the ratio between T low and T high of the I2C SCL line
+- Possible Values:
+  - I2C_DUTYCYCLE_2    = 2:1
+  - I2C_DUTYCYCLE_16_9 = 16:9
+- By choosing the appropriate duty cycle we can pre-scale the peripheral clock to achieve the desired I2C Speed.
+
+
+
+### I2C Repeated Start Example Statement
+- Whenever one master wants to communicate with 2 devices one by one for certain n times, then the master will establish the communication by sending slave address, then send the data -or- read the data, again those communication is over. but again the same master wants to establish communication with the different slave means then the master will send the start condition without sending a stop condition. so that master will hold the bus.
 
 
 
