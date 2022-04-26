@@ -46,10 +46,35 @@ CISC - Complex Instruction set computer
 
 
 
-#### ARM Processors vs Intel Processors
+##### ARM Processors vs Intel Processors
 
 - Main difference between ARM and Intel processor is the instruction set, ARM is RISC architecture and Intel is CISC architecture
-- ARM uses Little Endian and Big Endian but Intel uses Little Endian, Endian Means it dicates the sequential order which bytes when arranged in the memeory
+- ARM uses Little Endian and Big Endian but Intel uses Little Endian, Endian Means it dicates the sequential order which bytes when arranged in the memory
 
+
+#### Embedded Systems with Arm Processors
+
+![arm](https://user-images.githubusercontent.com/84496147/165334717-1b196a6a-db6c-4b72-af1b-b7132cb13474.PNG)
+
+
+
+##### ARM Bus Technology and AMBA Bus Protocol
+
+- There are two classes of devices
+  - Bus master: ARM processor core
+  - Bus slave: Peripherals
+
+- Two Bus Architecture levels
+  - Physical Level
+    - Electrical characteristics
+    - Bus width e.g: 16,32 bit etc
+  - Protocol level
+    - Communication protocols.
+
+- AMBA - Advanced Microcontroller Bus Architecture
+  - Buses
+    - ASB - ARM System Bus
+    - APB - ARM Peripheral Bus
+    - AHB - ARM High Performance Bus (High Performance) 
 
 
